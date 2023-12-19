@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>German Flashcards</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        #flashcard-container {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #007BFF;
+        }
+
+        #flashcard {
+            margin-bottom: 20px;
+        }
+
+        #translationInput {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        #notification,
+        #success {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #FF0000;
+        }
+
+        #success {
+            color: #008000;
+        }
+
+        button {
+            padding: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 20px;
+            background-color: #28A745;
+            color: #fff;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        #round-summary {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        #round-summary p {
+            margin-bottom: 10px;
+        }
+    </style>
+    </head>
+<body>
+
+<div id="flashcard-container">
+    <h1>German Flashcards</h1>
+    <div id="flashcard"></div>
+    <input type="text" id="translationInput" placeholder="Enter English translation" onkeypress="handleKeyPress(event)">
+    <div id="notification"></div>
+    <div id="success"></div>
+    <button onclick="checkTranslation()">Check Translation</button>
+    <div id="round-summary"></div>
+</div>
+
+<script>
+    let flashcards = [
+    {
+            "german": "Apfel",
+            "english": "Apple"
+        },
+        {
+            "german": "Haus",
+            "english": "House"
+        },
+        {
+            "german": "Tisch",
+            "english": "Table"
+        },
+        {
+            "german": "Auto",
+            "english": "Car"
+        },
+        {
+            "german": "Eltern",
+            "english": "Parents"
+        },
+        {
+            "german": "Fisch",
+            "english": "Fish"
+        },
+        {
+            "german": "Wie alt",
+            "english": "How old"
+        },
+        {
+            "german": "Mitbewohner",
+            "english": "Roommate"
+        },
+        {
+            "german": "Liebe",
+            "english": "Love"
+        },
+        {
+            "german": "Schal",
+            "english": "Scarf"
+        },
+        {
+            "german": "Sonnencreme",
+            "english": "Sunscreen"
+        },
+        {
+            "german": "Sommer",
+            "english": "Summer"
+        },
+        {
+            "german": "Wandere",
+            "english": "Hike"
+        },
+        {
+            "german": "Neblig",
+            "english": "Foggy"
+        },
+        {
+            "german": "Wasserflasche",
+            "english": "Water bottle"
+        },
+        {
+            "german": "Fruhling",
+            "english": "Spring"
+        },
+        {
+            "german": "Schlecht",
+            "english": "Bad"
+        },
+        {
+            "german": "Windig",
+            "english": "Windy"
+        },
+        {
+            "german": "Regnet",
+            "english": "Raining"
+        },
+        {
+            "german": "Herbst",
+            "english": "Fall"
+        },
+        {
+            "german": "Regenschirm",
+            "english": "Umbrella"
+        },
+        {
+            "german": "bewolkt",
+            "english": "Cloudy"
+        },
+		{
+        "german": "sein",
+        "english": "be"
+		},
+		{
+        "german": "haben",
+        "english": "have"
+		},		
+		{
+        "german": "kommen",
+        "english": "come"
+		},
+		{
+        "german": "gehen",
+        "english": "go"
+		},		
+		{
+        "german": "sagen",
+        "english": "say"
+		},
+		{
+        "german": "sehen",
+        "english": "see"
+		},
+		{
+        "german": "horen",
+        "english": "hear"
+		},
+		{
+        "german": "essen",
+        "english": "eat"
+		},
+		{
+        "german": "trinken",
+        "english": "drink"
+		},
+		{
+        "german": "lesen",
+        "english": "read"
+		},
+		{
+        "german": "schreiben",
+        "english": "write"
+		},
+		{
+        "german": "spielen",
+        "english": "play"
+		},
+		{
+        "german": "lernen",
+        "english": "learn"
+		},
+		{
+        "german": "schreiben",
+        "english": "write"
+		},
+		{
+        "german": "verstehen",
+        "english": "understand"
+		},
+		{
+        "german": "sprechen",
+        "english": "speak"
+		},
+		{
+        "german": "arbeiten",
+        "english": "work"
+		},
+		{
+        "german": "schlafen",
+        "english": "sleep"
+		},
+		{
+        "german": "kommen",
+        "english": "come"
+		},
+		{
+        "german": "wohnen",
+        "english": "live"
+		},
+        {
+        "german": "dein",
+        "english": "your"
+		},
+        {
+        "german": "Polnisch",
+        "english": "Polish"
+		},
+        {
+        "german": "toll",
+        "english": "great"
+		},
+        {
+        "german": "schwer",
+        "english": "difficult"
+		},
+        {
+        "german": "einfach",
+        "english": "easy"
+		},
+        {
+        "german": "ihr",
+        "english": "her"
+		},
+        {
+        "german": "Sein",
+        "english": "his"
+		},
+        {
+        "german": "nicht",
+        "english": "Not"
+		},
+        {
+        "german": "schnell",
+        "english": "quickly"
+		},
+        {
+        "german": "ein bisschen",
+        "english": "a little"
+		},
+        {
+        "german": "Nur",
+        "english": "Only"
+		},
+        {
+        "german": "muttersprache",
+        "english": "mother tongue"
+		},
+        {
+        "german": "lerne",
+        "english": "study"
+		},
+    ];
+
+    let currentFlashcardIndex = 0;
+    let translationAttempts = 0;
+    let correctGuesses = [];
+    let incorrectGuesses = [];
+
+    function shuffleFlashcards() {
+        for (let i = flashcards.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [flashcards[i], flashcards[j]] = [flashcards[j], flashcards[i]];
+        }
+    }
+
+    function showFlashcard() {
+        const flashcardElement = document.getElementById("flashcard");
+        const currentFlashcard = flashcards[currentFlashcardIndex];
+        flashcardElement.innerHTML = `<p>German: ${currentFlashcard.german}</p>`;
+    }
+
+    function showNotification(message, color) {
+        const notificationElement = document.getElementById("notification");
+        notificationElement.innerText = message;
+        notificationElement.style.color = color;
+    }
+
+    function clearNotification() {
+        const notificationElement = document.getElementById("notification");
+        notificationElement.innerText = "";
+        notificationElement.style.color = "";
+    }
+
+    function showSuccessMessage(message) {
+        const successElement = document.getElementById("success");
+        successElement.innerText = message;
+    }
+
+    function clearSuccessMessage() {
+        const successElement = document.getElementById("success");
+        successElement.innerText = "";
+    }
+
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            checkTranslation();
+        }
+    }
+
+    function checkTranslation() {
+        const translationInput = document.getElementById("translationInput");
+        const currentFlashcard = flashcards[currentFlashcardIndex];
+
+        if (translationInput.value.toLowerCase() === currentFlashcard.english.toLowerCase()) {
+            clearNotification();
+            showSuccessMessage("Correct! Moving to the next word.");
+            translationInput.value = "";
+            correctGuesses.push(currentFlashcard.german);
+            currentFlashcardIndex = (currentFlashcardIndex + 1) % flashcards.length;
+            translationAttempts = 0;
+            showFlashcard();
+        } else {
+            translationAttempts++;
+
+            if (translationAttempts === 3) {
+                showNotification(`Incorrect! The correct translation is: ${currentFlashcard.english}. Moving to the next word.`, "#FF0000");
+                translationInput.value = "";
+                incorrectGuesses.push(currentFlashcard.german);
+                currentFlashcardIndex = (currentFlashcardIndex + 1) % flashcards.length;
+                translationAttempts = 0;
+                showFlashcard(); // Make sure to call showFlashcard() here to move to the next word
+            } else {
+                const remainingWords = flashcards.length - currentFlashcardIndex;
+                showNotification(`Incorrect! Try again. Attempts left: ${3 - translationAttempts}. ${remainingWords} words remaining.`, "#FF0000");
+            }
+        }
+
+        // Clear success message when moving to the next word
+        clearSuccessMessage();
+    }
+
+    function getHint(currentFlashcard) {
+        // Provide more descriptive hints for each word
+        const hints = {
+            "Apple": "It's a type of fruit.",
+            "House": "A place where people live.",
+            "Table": "Used for placing things on.",
+            // Add hints for other words as needed
+        };
+
+        return hints[currentFlashcard.english] || "No hint available.";
+    }
+
+    function showScore() {
+        const score = flashcards.length - translationAttempts;
+        showNotification(`You've completed all words! Your score: ${score}`, "#008000");
+    }
+
+    function endRoundSummary() {
+        const roundSummaryElement = document.getElementById("round-summary");
+        roundSummaryElement.innerHTML = `<p>Round Summary:</p>
+            <p>Correct Guesses: ${correctGuesses.join(', ')}</p>
+            <p>Incorrect Guesses: ${incorrectGuesses.join(', ')}</p>`;
+    }
+
+
+    shuffleFlashcards();
+    showFlashcard();
+</script>
+
+</body>
+</html>
